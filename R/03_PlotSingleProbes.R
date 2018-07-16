@@ -14,12 +14,12 @@ sampleAnnotFetal <- read_tsv(paste0("./data/processed/allen_human_fetal_brain_sa
 
 #grab it from the limma results file
 probesInfo <- read_csv(paste0("./results/limma/lateral habenular nucleus.allen_HBA.csv")) %>% select(-t, -p.value, -is_qc_pass)
-genes_of_interest <- c("GPR151")
-genes_of_interest <- c("UGT2B15")
-genes_of_interest <- c("TRPM8")
+#genes_of_interest <- c("GPR151")
+#genes_of_interest <- c("UGT2B15")
+#genes_of_interest <- c("TRPM8")
 
 
-#genes_of_interest <- c("CYP3A5", "CYP3A4")
+genes_of_interest <- c("CYP3A5", "CYP3A4")
 
 #genes_of_interest <- c("CYP3A4", "CYP3A43", "CYP3A5","CYP3A7")
 #genes_of_interest <- c("CYP3A4", "CYP3A5","CYP3A7")
@@ -82,3 +82,5 @@ fetalPlot <- fetalPlot + theme(plot.margin = margin(.85, 0.1, 0, 0.1, "cm"))
 adultPlot <- adultPlot + theme(plot.margin = margin(.85, 0.1, 0, 0.1, "cm"))
 
 plot_grid(adultPlot, fetalPlot, rel_heights = c(8.5,10), labels = c("A (adult brain)", "B (fetal brain)"), nrow=2, label_x=0.5, hjust=0.5)
+#save as for GPR151 7x6.6 PDF
+#for CYP 11x6.6

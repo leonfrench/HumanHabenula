@@ -33,8 +33,11 @@ alcoholGroups <- allGOResults %>% filter(grepl( "alcohol", MainTitle)) %>% arran
 alcoholGroups %<>% filter(age=="adult")
 alcoholGroups %>% ungroup() %>% select(MainTitle) %>% distinct()
 alcoholGroups %>% filter(adj.P.Val < 0.05) 
+alcoholGroups %>% select(MainTitle, ID)
 alcoholGroups %>% filter(MainTitle == "response to alcohol")
 alcoholGroups %>% filter(adj.P.Val < 0.05) %>% select(MainTitle, ID) #look at which genes
+alcoholGroups %>% filter(MainTitle == "primary alcohol catabolic process")
+
 
 allGOResults %>% filter(grepl( "cocaine", MainTitle)) %>% arrange(P.Value) %>% group_by(age, region) %>% mutate(adj.P.Val = p.adjust(P.Value, method="fdr"))
 allGOResults %>% filter(grepl( "morphine", allNames)) %>% arrange(P.Value) %>% group_by(age, region) %>% mutate(adj.P.Val = p.adjust(P.Value, method="fdr"))

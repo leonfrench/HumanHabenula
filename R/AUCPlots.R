@@ -2,7 +2,7 @@ library(plotROC)
 library(ggplot2)
 library(dplyr)
 library(tidyr)
-library(tidyr)
+library(tmod)
 source("./R/GeneSetBuilders.R")
 
 matrixAdult <- read_tsv("./data/processed/allen_HBA_brainarea_vs_genes_exp_qcNames.tsv", guess_max=22000)
@@ -27,19 +27,19 @@ if (exists("geneSetsGO") && length(geneSetsGO$MODULES2GENES) > 1000 ) { #assume 
   geneSetsGO <- loadGOSets(allGenes)
 }
 #targetGroupID <- dplyr::filter(tbl_df(geneSetsGO$MODULES), Title == "MHC protein complex")$ID
-targetGroupID <- dplyr::filter(tbl_df(geneSetsGO$MODULES), Title == "cilium movement")$ID
-targetGroupID <- dplyr::filter(tbl_df(geneSetsGO$MODULES), Title == "cytokine receptor activity")$ID
-targetGroupID <- dplyr::filter(tbl_df(geneSetsGO$MODULES), Title == "immunoglobulin binding")$ID
+#targetGroupID <- dplyr::filter(tbl_df(geneSetsGO$MODULES), Title == "cilium movement")$ID
+#targetGroupID <- dplyr::filter(tbl_df(geneSetsGO$MODULES), Title == "cytokine receptor activity")$ID
+#targetGroupID <- dplyr::filter(tbl_df(geneSetsGO$MODULES), Title == "immunoglobulin binding")$ID
 
 
-genesOfInterest <- unlist(geneSetsGO$MODULES2GENES[targetGroupID])
+#genesOfInterest <- unlist(geneSetsGO$MODULES2GENES[targetGroupID])
 
-#geneSetsToUse <- loadFileSets("Extra")
-#genesOfInterest <- unlist(geneSetsToUse$MODULES2GENES["hedonic.down"])
+geneSetsToUse <- loadFileSets("Extra")
+genesOfInterest <- unlist(geneSetsToUse$MODULES2GENES["hedonic.down"])
 
 
 
-combined %<>% mutate(present = gene_symbol %in% genesOfInterest *1)
+combined %<>% mutate(present = gene_symbol %in% genesOfInterest * 1)
 combined %<>% mutate(combinedLabel = paste(source, region))
 
 cbbPalette <- c("#000000", "#E69F00", "#000000", "#E69F00")
@@ -58,4 +58,4 @@ cbbPalette <- c("#000000", "#E69F00", "#000000", "#E69F00")
     guides(color = guide_legend(override.aes = list(linetype = c("solid","solid", "dotted","dotted")))) +
     theme(legend.key.width = unit(2, "line"))
     )
-
+#save as 6x6 pdf
