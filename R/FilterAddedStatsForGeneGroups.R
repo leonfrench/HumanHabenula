@@ -1,3 +1,5 @@
+source("./R/GeneSetBuilders.R")
+
 sourceExpression <- "adult"
 #sourceExpression <- "fetal"
 
@@ -5,8 +7,9 @@ sourceExpression <- "adult"
 #geneSetName <- "GO" 
 #geneSetName <- "PhenoCarta" 
 #geneSetName <- "DisGeNet"
-#geneSetName <- "Custom" 
-geneSetName <- "Extra" 
+geneSetName <- "Custom" 
+#geneSetName <- "Extra" 
+targetGroup <- "smokingCessation.27021816"
 
 targetGroup <- "positive regulation of hemopoiesis"
 targetGroup <- "Drug-induced depressive state"

@@ -2,6 +2,7 @@ library(cowplot)
 library(reshape2)
 library(dplyr)
 library(magrittr)
+library(cowplot)
 library(ggplot2)
 library(readr)
 
@@ -19,10 +20,10 @@ probesInfo <- read_csv(paste0("./results/limma/lateral habenular nucleus.allen_H
 #genes_of_interest <- c("TRPM8")
 
 
-genes_of_interest <- c("CYP3A5", "CYP3A4")
+#genes_of_interest <- c("CYP3A7")
 
 #genes_of_interest <- c("CYP3A4", "CYP3A43", "CYP3A5","CYP3A7")
-#genes_of_interest <- c("CYP3A4", "CYP3A5","CYP3A7")
+genes_of_interest <- c("CYP3A4", "CYP3A5","CYP3A7")
 
 
 #filter for probes for gene of interest - where is the probe info? 
@@ -68,14 +69,14 @@ cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2"
 (adultPlot <- ggplot(adultFocus, aes(y=Expression, x=Donor, fill = Region, color=Region)) + 
   geom_violin(data = filter(adultFocus, Region == "remaining structures")) + theme_bw() +
     geom_point(data = filter(adultFocus, Region != "remaining structures")) + 
-  facet_wrap( ~probe_name, scales="free_y", nrow=1)+
+    facet_wrap( ~probe_name, nrow=1) + #, scales="free_y", nrow=1) +
   scale_fill_manual(values=cbbPalette) + scale_colour_manual(values=cbbPalette) + xlab("") + guides(fill=FALSE, color=FALSE)
 )
 
 (fetalPlot <- ggplot(fetalFocus, aes(y=Expression, x=Donor, fill = Region, color=Region)) + 
   geom_violin(data = filter(fetalFocus, Region == "remaining structures")) + theme_bw() +
   geom_point(data = filter(fetalFocus, Region != "remaining structures")) + 
-  facet_wrap( ~probe_name, scales="free_y", nrow=1) +
+  facet_wrap( ~probe_name, nrow=1) + #, scales="free_y", nrow=1) +
   scale_fill_manual(values=cbbPalette) + scale_colour_manual(values=cbbPalette) + theme(legend.position="bottom"))
 
 fetalPlot <- fetalPlot + theme(plot.margin = margin(.85, 0.1, 0, 0.1, "cm"))

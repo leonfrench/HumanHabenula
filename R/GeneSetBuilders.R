@@ -1,3 +1,5 @@
+library(tmod)
+
 otherGeneListsFolder <- "./data/other gene lists/"
 phenocarta_folder <- "./data/other gene lists/phenocarta/"
 

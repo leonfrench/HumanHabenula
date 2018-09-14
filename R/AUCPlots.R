@@ -1,3 +1,4 @@
+library(cowplot)
 library(plotROC)
 library(ggplot2)
 library(dplyr)
@@ -59,3 +60,29 @@ cbbPalette <- c("#000000", "#E69F00", "#000000", "#E69F00")
     theme(legend.key.width = unit(2, "line"))
     )
 #save as 6x6 pdf
+
+throwawayAUC <- combined
+throwawayAUC$rank <- -1*throwawayAUC$rank
+throwawayAUC$combinedLabel <- factor(throwawayAUC$combinedLabel, levels= c("Adult lateral habenular nucleus", "Adult medial habenular nucleus",  "Fetal lateral habenular nucleus", "Fetal medial habenular nucleus"))
+
+cbbPalette <- c("#000000", "#E69F00",  "#000000", "#E69F00")
+
+throwawayAUC$linetype <-"dotted"
+  
+(rasterPlot <- ggplot(throwawayAUC, aes(x = rank, y = present, color= combinedLabel)) + 
+    geom_blank() + 
+    geom_vline(data = filter(throwawayAUC, present == 1), aes(xintercept=rank, color=combinedLabel, linetype=combinedLabel)) + #,color="black") + #, size=0.07) + 
+    theme_bw()+coord_cartesian(expand=F) +
+    ylab("Transcriptomic cell type") + 
+    facet_wrap(~combinedLabel, strip.position="top",ncol=1) + #, switch = "both"
+    theme(strip.background = element_blank(), strip.placement = "inside") + #, strip.text.y = element_text(angle = 180)) +
+    theme(axis.title.y = element_blank(),  axis.text.y=element_blank(), axis.ticks.y=element_blank(),axis.ticks.x=element_blank()) +
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
+    scale_x_continuous(name = paste0("Habenula Specific Expression (",length(unique(throwawayAUC$gene_symbol))," genes)"), breaks= c(min(throwawayAUC$rank)+700, max(throwawayAUC$rank)-700), labels = c("Enriched", "Depleted")) +
+    scale_colour_manual(values=cbbPalette) +
+    scale_linetype_manual(values = c("solid","solid", "dashed","dashed")) + 
+    guides(color=FALSE, linetype=FALSE) 
+  )
+
+(bothPlots <- plot_grid(AUCPlot, rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.6),scale = 0.95, labels = c("A", "B"))) #add labels = c("A", "B"), for manuscript
+#save as 6x8 PDF
