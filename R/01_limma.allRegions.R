@@ -83,9 +83,10 @@ for (donorFolder in list.files(paste0("./data/raw/",sourceExpression,"/"), patte
   }
 }
 
+
 #set in same order
 sampleAnnot <- allsampleAnnot
-expressionMatrix <- allExpression[, c("probe_name", sampleAnnot$uniqueID)]
+expressionMatrix <- allExpression[, c("probe_name", sampleAnnot$uniqueID)] #handles the duplicate probe_name columns from bind_cols
 
 print(paste("Number of unique regions:", length(unique(sampleAnnot$structure_name_left_right_stripped))))
 print(paste("Number of samples:", nrow(sampleAnnot)))

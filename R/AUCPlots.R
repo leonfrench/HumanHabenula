@@ -1,3 +1,5 @@
+library(magrittr)
+library(readr)
 library(cowplot)
 library(plotROC)
 library(ggplot2)
@@ -49,15 +51,15 @@ cbbPalette <- c("#000000", "#E69F00", "#000000", "#E69F00")
     #geom_roc(n.cuts=0, linetype = "dashed") + 
     geom_roc(data = combined %>% filter(source == "Fetal"), n.cuts=0, linetype = "dotted") + 
     geom_roc(data = combined %>% filter(source == "Adult"), n.cuts=0, linetype = "solid") + 
-    style_roc() + coord_cartesian(expand=F) +
+    style_roc() + 
     theme(legend.position = c(1,0), legend.justification = c(1, 0), legend.background= element_rect(fill = "transparent", colour = "transparent"), plot.margin=unit(c(.5,.5,.5,.5),"cm")) + 
-    labs(color='Gene Group')  + 
+    labs(color='Age and division')  + 
     #facet_grid(dummy ~ ., switch="y")  + ylab("") +
     theme(strip.background = element_blank(), strip.placement = "inside", strip.text = element_blank()) +
     geom_abline(slope = 1, intercept = 0, colour = "grey90", size = 0.2) +
     scale_fill_manual(values=cbbPalette) + scale_colour_manual(values=cbbPalette) +
     guides(color = guide_legend(override.aes = list(linetype = c("solid","solid", "dotted","dotted")))) +
-    theme(legend.key.width = unit(2, "line"))
+    theme(legend.key.width = unit(2, "line"))  + coord_fixed(expand=F)
     )
 #save as 6x6 pdf
 
@@ -81,8 +83,10 @@ throwawayAUC$linetype <-"dotted"
     scale_x_continuous(name = paste0("Habenula Specific Expression (",length(unique(throwawayAUC$gene_symbol))," genes)"), breaks= c(min(throwawayAUC$rank)+700, max(throwawayAUC$rank)-700), labels = c("Enriched", "Depleted")) +
     scale_colour_manual(values=cbbPalette) +
     scale_linetype_manual(values = c("solid","solid", "dashed","dashed")) + 
-    guides(color=FALSE, linetype=FALSE) 
+    guides(color=FALSE, linetype=FALSE)
   )
 
 (bothPlots <- plot_grid(AUCPlot, rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.6),scale = 0.95, labels = c("A", "B"))) #add labels = c("A", "B"), for manuscript
-#save as 6x8 PDF
+#save as 6x8 PDF  -remove cords fixed?
+#poster 5x9 PDF
+(bothPlots <- plot_grid(AUCPlot, rasterPlot, nrow = 2, align = "v", rel_heights=c(1,0.45),scale = 1)) #add labels = c("A", "B"), for manuscript
